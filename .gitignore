@@ -8,7 +8,7 @@ db-backup-*
 
 # Builds directory
 builds/
-
+test-build
 # Backup files
 backups/
 *.sql

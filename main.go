@@ -211,24 +211,15 @@ func (bm *BackupManager) performBackup(outputPath string) error {
 		// and then copy the dump.rdb file, or use --rdb flag if available in newer redis-cli versions.
 		// Here we use the --rdb flag which dumps the RDB file to stdout
 
-		// If password is provided, add authentication
-		authPart := ""
+		// If password is provided, set REDISCLI_AUTH environment variable
+		// This avoids the warning about using password on command line
 		if bm.config.DBPassword != "" {
-			authPart = fmt.Sprintf("-a %s", bm.config.DBPassword)
+			os.Setenv("REDISCLI_AUTH", bm.config.DBPassword)
 		}
 
-		cmd = fmt.Sprintf("redis-cli -h %s -p %s %s --rdb %s",
-			bm.config.DBHost, bm.config.DBPort, authPart, outputPath)
-
-		// redis-cli --rdb writes directly to the file, so we don't need redirection >
-		// However, our compression logic below assumes we are piping stdout.
-		// redis-cli --rdb writes to a file, not stdout.
-		// So we need to handle this differently.
-
-		// Let's use a different approach for Redis that works with pipes:
 		// redis-cli --rdb - (dash) writes to stdout
-		cmd = fmt.Sprintf("redis-cli -h %s -p %s %s --rdb -",
-			bm.config.DBHost, bm.config.DBPort, authPart)
+		cmd = fmt.Sprintf("redis-cli -h %s -p %s --rdb -",
+			bm.config.DBHost, bm.config.DBPort)
 
 	default:
 		return fmt.Errorf("unsupported database connection: %s", bm.config.Connection)

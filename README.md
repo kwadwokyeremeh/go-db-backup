@@ -7,7 +7,7 @@ A high-frequency database backup system written in Go, supporting MySQL/MariaDB,
 - High-frequency database backups (configurable interval)
 - Support for MySQL, MariaDB, PostgreSQL, and Redis
 - Compression with gzip
-- S3-compatible storage support (AWS, HETZNER, etc.)
+- S3-compatible storage support (AWS, HETZNER, S3-compatible services, etc.)
 - Automatic cleanup of old backups
 - Optimized performance with nice/ionice
 - Configurable retention policy
