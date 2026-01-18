@@ -230,15 +230,27 @@ Restoring Redis requires stopping the server and replacing the `dump.rdb` file.
 
 ## Building the Executable
 
+You can build the application for your current platform using:
+
 ```bash
 go build -o db-backup main.go
 ```
 
-Then run:
+### Cross-Platform Builds
+
+A `build.sh` script is included to generate binaries for multiple platforms.
 
 ```bash
-./db-backup
+chmod +x build.sh
+./build.sh
 ```
+
+This will create a `builds/` directory containing:
+- `db-backup-linux-amd64` (Standard Linux servers)
+- `db-backup-linux-arm64` (AWS Graviton, Raspberry Pi)
+- `db-backup-darwin-amd64` (Intel Macs)
+- `db-backup-darwin-arm64` (Apple Silicon Macs)
+- `db-backup-windows-amd64.exe` (Windows)
 
 ## Running as a Service
 
