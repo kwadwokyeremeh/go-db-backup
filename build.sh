@@ -28,6 +28,13 @@ GOOS=darwin GOARCH=arm64 go build -o builds/db-backup-darwin-arm64 -ldflags="-s 
 echo "Building for Windows AMD64..."
 GOOS=windows GOARCH=amd64 go build -o builds/db-backup-windows-amd64.exe -ldflags="-s -w" main.go
 
+# Make binaries executable (except Windows .exe which doesn't need chmod)
+echo "Making binaries executable..."
+chmod +x builds/db-backup-linux-amd64
+chmod +x builds/db-backup-linux-arm64
+chmod +x builds/db-backup-darwin-amd64
+chmod +x builds/db-backup-darwin-arm64
+
 echo "Builds completed successfully!"
 echo "Binaries are located in the 'builds' directory:"
 
