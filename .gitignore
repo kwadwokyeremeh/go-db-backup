@@ -1,0 +1,28 @@
+# Binaries
+db-backup
+db-backup-*
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Builds directory
+builds/
+
+# Backup files
+backups/
+*.sql
+*.sql.gz
+
+# Environment files
+.env
+
+# IDEs
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS specific
+.DS_Store
+Thumbs.db
