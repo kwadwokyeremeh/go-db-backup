@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  db-backup:
+    build: .
+    container_name: go-db-backup
+    environment:
+      - DB_CONNECTION=mariadb
+      - DB_HOST=your-db-host
+      - DB_PORT=3306
+      - DB_NAME=your-database
+      - DB_USER=your-username
+      - DB_PASSWORD=your-password
+      - BACKUP_PATH=/backups
+      - S3_BUCKET=your-bucket-name
+      - S3_REGION=hel1
+      - S3_ENDPOINT=https://hel1.your-objectstorage.com
+      - S3_PREFIX=backups/
+      - BACKUP_INTERVAL=3600
+      - MAX_FILES=10
+      - GZIP_COMPRESSION=true
+      - AWS_ACCESS_KEY_ID=your-access-key
+      - AWS_SECRET_ACCESS_KEY=your-secret-key
+    volumes:
+      - ./backups:/backups
+    # Overriding command to empty list to ensure environment variables are used
+    # instead of Dockerfile CMD flags which would take precedence.
+    command: []
+    restart: unless-stopped
+    # Optional: add health check if needed
+    # healthcheck:
+    #   test: ["CMD", "pgrep", "db-backup"]
+    #   interval: 30s
+    #   timeout: 10s
+    #   retries: 3

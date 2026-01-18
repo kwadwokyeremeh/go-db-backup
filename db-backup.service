@@ -1,0 +1,41 @@
+[Unit]
+Description=Go Database High-Frequency Backup Service
+After=network.target mysql.service
+Requires=mysql.service
+
+[Service]
+Type=simple
+User=www-data
+WorkingDirectory=/opt/go-db-backup
+ExecStart=/opt/go-db-backup/db-backup
+Environment=DB_CONNECTION=mariadb
+Environment=DB_HOST=localhost
+Environment=DB_PORT=3306
+Environment=DB_NAME=your_database
+Environment=DB_USER=your_user
+Environment=DB_PASSWORD=your_password
+Environment=BACKUP_PATH=/opt/backups
+Environment=S3_BUCKET=your_bucket
+Environment=S3_REGION=hel1
+Environment=S3_ENDPOINT=https://hel1.your-objectstorage.com
+Environment=S3_PREFIX=backups/
+Environment=BACKUP_INTERVAL=3600
+Environment=MAX_FILES=3
+Environment=GZIP_COMPRESSION=true
+Environment=AWS_ACCESS_KEY_ID=your_access_key
+Environment=AWS_SECRET_ACCESS_KEY=your_secret_key
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=go-db-backup
+
+# Security settings
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/opt/backups
+
+[Install]
+WantedBy=multi-user.target
