@@ -171,6 +171,63 @@ Or use an environment file:
 EnvironmentFile=/etc/default/go-db-backup
 ```
 
+## Restoring Backups
+
+### MySQL / MariaDB
+
+**Uncompressed (.sql):**
+```bash
+mysql -u username -p database_name < backup_file.sql
+```
+
+**Compressed (.sql.gz):**
+```bash
+gunzip < backup_file.sql.gz | mysql -u username -p database_name
+```
+
+### PostgreSQL
+
+**Uncompressed (.sql):**
+```bash
+psql -U username -d database_name -f backup_file.sql
+```
+
+**Compressed (.sql.gz):**
+```bash
+gunzip < backup_file.sql.gz | psql -U username -d database_name
+```
+
+### Redis
+
+Restoring Redis requires stopping the server and replacing the `dump.rdb` file.
+
+1. **Stop Redis Server:**
+   ```bash
+   sudo systemctl stop redis
+   ```
+
+2. **Replace Dump File:**
+   
+   If compressed:
+   ```bash
+   gunzip -c backup_file.rdb.gz > /var/lib/redis/dump.rdb
+   ```
+   
+   If uncompressed:
+   ```bash
+   cp backup_file.rdb /var/lib/redis/dump.rdb
+   ```
+
+3. **Fix Permissions:**
+   ```bash
+   chown redis:redis /var/lib/redis/dump.rdb
+   ```
+
+4. **Start Redis Server:**
+   ```bash
+   sudo systemctl start redis
+   ```
+
 ## Building the Executable
 
 ```bash
